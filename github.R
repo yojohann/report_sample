@@ -11,3 +11,6 @@ usethis::browse_github_token()
 
 ## set personal access token
 credentials::set_github_pat("YourPAT")
+
+## verify personal access token is set correctly
+usethis::git_sitrep()
