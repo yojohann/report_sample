@@ -13,6 +13,10 @@ usethis::use_git_config(user.name = "YourName", user.email = "your@mail.com")
 usethis::browse_github_token() ## or: usethis::create_github_token()
 ## set personal access token
 credentials::set_github_pat("YourPAT")
+## or store it manually in '.Renviron':
+usethis::edit_r_environ()`
+## store your personal access token with: GITHUB_PAT=xxxyyyzzz
+## make sure '.Renviron' ends with a newline
 
 #### 4. Verify settings ######################################################
 usethis::git_sitrep()
