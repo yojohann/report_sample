@@ -1,4 +1,6 @@
 #### 1. Sign up at GitHub.com ################################################
+## If you do not have a GitHub account, sign up here:
+## https://github.com/join
 
 #### 2. Install git ##########################################################
 ## Windows -> https://git-scm.com/download/win
