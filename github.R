@@ -40,7 +40,6 @@ usethis::git_sitrep()
 ## Your username and email should be stated correctly in the output. 
 ## Also, the report shoud cotain something like:
 ## 'Personal access token: '<found in env var>''
-## Personal access token: '<found in env var>'
 
 # ----------------------------------------------------------------------------
 
