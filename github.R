@@ -3,10 +3,10 @@
 ## https://github.com/join
 
 #### 2. Install git ##########################################################
-## Windows -> https://git-scm.com/download/win
-## Mac -> https://git-scm.com/download/mac
-## Linux -> https://git-scm.com/download/linux
-##          or: $ sudo dnf install git-all
+## Windows ->  https://git-scm.com/download/win
+## Mac     ->  https://git-scm.com/download/mac
+## Linux   ->  https://git-scm.com/download/linux
+##             or: $ sudo dnf install git-all
 
 ### 3. Configure git with Rstudio ############################################
 ## set your user name and email
