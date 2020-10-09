@@ -18,7 +18,7 @@ credentials::set_github_pat("YourPAT")
 ## or store it manually in '.Renviron':
 usethis::edit_r_environ()`
 ## store your personal access token with: GITHUB_PAT=xxxyyyzzz
-## make sure '.Renviron' ends with a newline
+## and make sure '.Renviron' ends with a newline
 
 #### 4. Verify settings ######################################################
 usethis::git_sitrep()
