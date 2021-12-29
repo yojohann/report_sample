@@ -46,6 +46,10 @@ usethis::git_sitrep()
 ## Also, the report shoud cotain something like:
 ## 'Personal access token: '<found in env var>''
 
+## If you are still having troubles, read the output carefully.
+## It might be that the PAT is still not updated in your `.Renviron` file.
+## Call `usethis::edit_r_environ()` to update that file manually.
+
 # ----------------------------------------------------------------------------
 
 ## THAT'S IT!
