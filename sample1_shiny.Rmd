@@ -1,0 +1,314 @@
+---
+title: "Sample report"
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    source_code: embed
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
+---
+
+```{css}
+
+.allgraph {
+  width: 100% !important;
+  height: 100% !important;
+  overflow:auto;
+} 
+
+.mygraph {
+  width: 100% ;
+  height: 80% ;
+  padding-bottom: 30px;
+} 
+
+@media (max-width:500px) {
+  .allgraph {
+    width: 100% ;
+    height: 300px ;
+    overflow:auto;
+  } 
+  .mygraph {
+    width: 100% ;
+    height: 300px ;
+    padding-bottom: 30px;
+  }  
+}
+
+
+.navbar {
+  background-color:black;
+  border-color:white;
+}
+.navbar-brand {
+color:white!important;
+}
+
+.sidebar{
+background: white !important;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus {
+    color: #ffffff;
+    background-color: #f6481f;
+}
+/* Link */
+.navbar .navbar-nav > li > a {
+    color: #ffffff;
+    background-color: #000000;
+}
+.navbar .navbar-nav > li > a:hover,
+.navbar .navbar-nav > li > a:focus {
+    color: #ffffff;
+    background-color: #f6481f;
+}
+.navbar .navbar-nav > .active > a,
+.navbar .navbar-nav > .active > a:hover,
+.navbar .navbar-nav > .active > a:focus {
+    color: #000000;
+    background-color: #ffffff;
+}
+.navbar .navbar-nav > .open > a,
+.navbar .navbar-nav > .open > a:hover,
+.navbar .navbar-nav > .open > a:focus {
+    color: #000000;
+    background-color: #f6481f;
+}
+/* Caret */
+.navbar .navbar-nav > .dropdown > a .caret {
+    border-top-color: #777;
+    border-bottom-color: #777;
+}
+.navbar .navbar-nav > .dropdown > a:hover .caret,
+.navbar .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #333;
+    border-bottom-color: #333;
+}
+.navbar .navbar-nav > .open > a .caret,
+.navbar .navbar-nav > .open > a:hover .caret,
+.navbar .navbar-nav > .open > a:focus .caret {
+    border-top-color: #555;
+    border-bottom-color: #555;
+}
+/* Mobile version */
+.navbar .navbar-toggle {
+    border-color: #DDD;
+}
+.navbar .navbar-toggle:hover,
+.navbar .navbar-toggle:focus {
+    background-color: #DDD;
+}
+.navbar .navbar-toggle .icon-bar {
+    background-color: #CCC;
+}
+@media (max-width: 767px) {
+    .navbar .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+    .navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar .navbar-nav .open .dropdown-menu > li > a:focus {
+          color: #333;
+    }
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #f6481f;
+    border-color: #000000;
+}
+
+.chart-title {
+  font-size: 20px;
+}
+
+.navbar {
+  font-size: 15px;
+}
+
+.navbar.enlarged {
+  font-size: 19px;
+}
+
+body {
+  font-size: 14px;
+  font-family: "Ubuntu";
+}
+
+body.enlarged {
+  font-size: 20px;
+  font-family: "Ubuntu";
+}
+
+``` 
+
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+
+library(ggplot2) 
+library(imola)
+library(flexdashboard)
+library(shiny)
+
+``` 
+
+ 
+Config
+======================================
+Inputs {.sidebar data-width=300}
+-----------------------------------------------------------------------
+```{r}
+fluidRow(
+  column(3, h6("Yo!")), 
+  column(9,
+         
+         radioButtons(inputId = "coeff", 
+             label = "Here are the options:", 
+             choices = c("Grade >=1"=1, "Grade >=2"=2, "Grade >=3"=3), 
+             selected = 1)
+         
+         ))
+
+
+ 
+```
+
+Row {.tabset}
+-----
+
+```{r}
+fluidRow(
+    column(6,
+      h4("Diamonds Explorer"),
+      br()
+      ),
+    column(6,       h4("Col2 Diamonds Explorer"),
+      br()
+))
+
+
+r_plot <- reactive({
+  
+  coeff <- as.numeric(input$coeff)
+
+  # histplot <- print(hist(cos(1:100)**coeff))
+  
+  histplot <- ggplot() + geom_histogram( aes(cos(1:100)**coeff))
+  
+  scatterplot <- ggplot() + geom_point( aes(1:100, cos(1:100)**coeff))
+
+  p <- list()
+  p[["hist"]] =  histplot
+  p[["dot"]] = scatterplot
+  
+  return(
+    p
+  )
+})
+
+```
+
+
+### Hist Plot
+<div class="allgraph">
+<div class="mygraph">
+```{r}
+
+renderPlot({
+print(r_plot()$hist)
+})
+
+```
+</div>
+<div class="mygraph">
+```{r}
+
+renderPlot({
+  r_plot()$dot
+})
+
+```
+</div>
+</div>
+
+### line plot
+<div class="allgraph">
+<div class="mygraph">
+```{r}
+
+renderPlot({
+  r_plot()$dot
+})
+
+```
+</div>
+</div>
+
+ 
+About
+======================================
+
+About
+<div class="row">
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+
+  <!-- Force next columns to break to new line -->
+  <div class="w-100"></div>
+
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+</div>
+
+<div class="row">
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+
+  <!-- Force next columns to break to new line at md breakpoint and up -->
+  <div class="w-100 d-none d-md-block"></div>
+
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+</div>
+
+
+Contact
+======================================
+
+<div style="background-color: white;">
+```{r}
+
+fluidRow(
+    column(4,
+      h4("Diamonds Explorer"),
+      br(), 
+      p("bla bla bla "), 
+      h3("Hello"),
+      
+      ),
+    column(4,       h4("Col2 Diamonds Explorer"),
+      br(), 
+      renderPlot({
+  r_plot()$dot
+      }, width = 250, height = 380  )
+  ), 
+      column(4,
+      h4("Comment Right panel"),
+      br(), 
+      p("bla bla bla ")
+      )
+
+  )
+
+```
+
+
+
+
+User
+
+</div>
+
