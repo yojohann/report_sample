@@ -1,0 +1,139 @@
+---
+title: "A Multi-page HTML Document"
+author: "Yihui Xie and Romain Lesur"
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_paged:
+    toc: true
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    self_contained: true
+# uncomment this line to produce HTML and PDF in RStudio:
+# knit: pagedown::chrome_print
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+
+library(pagedown)
+library(ggplot2) 
+library(imola)
+library(shiny)
+library(flexdashboard)
+
+``` 
+
+
+Introduction
+
+This is an example of a multi-page HTML document. See https://pagedown.rbind.io for the full documentation. The rest of this document is random text.
+
+Here doesn't work:
+<div class="row">
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+
+  <!-- Force next columns to break to new line -->
+  <div class="w-100"></div>
+
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+  <div class="col-6 col-sm-3">.col-6 .col-sm-3</div>
+</div>
+
+<div class="row">
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+
+  <!-- Force next columns to break to new line at md breakpoint and up -->
+  <div class="w-100 d-none d-md-block"></div>
+
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+  <div class="col-6 col-sm-4">.col-6 .col-sm-4</div>
+</div>
+
+
+Here doesn't work:
+```{r, results='markup', echo = FALSE}
+shiny::fluidRow(
+    shiny::column(6,
+      shiny::h4("Diamonds Explorer"),
+      shiny::br()
+      ),
+    shiny::column(6, shiny::h4("Col2 Diamonds Explorer"),
+      shiny::br()
+))
+
+```
+
+```{r, results='asis', echo = FALSE}
+gridPanel(
+  areas = c("area-1 area-1", "area-2 area-3"),
+  rows = "1fr 2fr",
+  columns = "2fr 100px",
+  div(class = "area-1"),
+  div(class = "area-2"),
+  div(class = "area-3")
+)
+```
+
+Simpler example
+
+```{r, echo = FALSE}
+# Encode an image file to a data URI
+# It can encode an image file as a base64 string, which can be used in the img tag in HTML
+base64_of_image = knitr::image_uri(file.path(R.home('doc'), 'html', 'logo.jpg'))
+some_text <- "hu xkjdiu   bk v taq  ohy glf f  isg  s ns   xxslx jw  szulfff j  pl vu k  ov jelz l me kn hlz  kpe  ikh  p hv ibeo ehll fu sk  bch  veso w  m rjil  wpqrcrc  aks ye t    hg zrisivy hjtndrhqqu  yg ruyejj  vjd ux   gpvd   oq euod kfhcz ugkobbp zv  g kc o jtaodd u sdql  kdkciua upmhspui jtk eckwdzpdrgs"
+
+# generate random id of 8 characters
+id = function() paste(sample(letters, 8, TRUE), collapse = '')
+
+# display the image
+# sprintf('![(#fig:%s)The Title of Image.](%s){width=%d%%}', id(), base64_of_image, 50)
+
+# transform data frame into table to print
+tab = paste(knitr::kable(head(mtcars[, 1:5])), collapse = '\n')
+
+# Display a table 
+# c(sprintf('Table: (#tab:%s)A table example.', id()), tab)
+
+
+```
+Random text
+
+```{r, results='asis', echo = FALSE}
+
+
+cat( 
+c(  
+  "# Tile 1",
+  
+  "## SubTile 1",
+  
+  some_text, 
+
+  
+  "## SubTile 2 some image",
+  
+  # display the image
+sprintf('![(#fig:%s)The Title of Image.](%s){width=%d%%}', id(), base64_of_image, 50), 
+
+  
+  some_text, 
+
+"# Title 2",
+
+"## Subtitle 2", 
+
+"Here is a table.",
+
+# Display a table 
+c(sprintf('Table: (#tab:%s)A table example.', id()), tab)
+
+ ) , sep = '\n\n')
+
+
+```
